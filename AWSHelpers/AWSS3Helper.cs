@@ -68,6 +68,24 @@ namespace AWSHelpers
             fileTransferUtility = new TransferUtility(S3client);
         }
 
+        public AWSS3Helper (RegionEndpoint regionendpoint, String AWSAccessKey, String AWSSecretKey)
+        {
+            // Set configuration info
+            AmazonS3Config config = new AmazonS3Config ();
+            config.Timeout = new TimeSpan (1, 0, 0);
+            config.ReadWriteTimeout = new TimeSpan (1, 0, 0);
+            config.RegionEndpoint = regionendpoint;
+
+            // Create S3 client
+            S3client = Amazon.AWSClientFactory.CreateAmazonS3Client
+                        (Gadgets.LoadConfigurationSetting ("AWSAccessKey", AWSAccessKey),
+                         Gadgets.LoadConfigurationSetting ("AWSSecretKey", AWSSecretKey),
+                         config);
+
+            // Create the file transfer utility class
+            fileTransferUtility = new TransferUtility (S3client);
+        }
+
         /// <summary>
         /// Class disposer
         /// </summary>
